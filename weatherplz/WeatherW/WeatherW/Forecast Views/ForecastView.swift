@@ -10,6 +10,8 @@ import WeatherKit
 import CoreLocation
 
 struct ForecastView: View {
+    @Environment(LocationManager.self) var locationManager
+    @State private var selectedCity: City?
     let weatherManager = WeatherManager.shared
     @State private var currentWeather: CurrentWeather?
     @State private var isLoading = false
@@ -42,16 +44,29 @@ struct ForecastView: View {
             }
         }
         .padding()
-        .task {
-            isLoading = true
-            Task.detached { @MainActor in
-                currentWeather = await weatherManager.currentWeather(for: CLLocation(latitude: 43.856951, longitude: -79.471330))
-                isLoading = false // Move this inside the Task to ensure it gets updated after the data is fetched
+        .task(id: locationManager.currentLocation) {
+            if let currentLocation = locationManager.currentLocation, selectedCity == nil {
+                selectedCity = currentLocation
             }
         }
+        
+        .task(id: selectedCity) {
+            if let selectedCity {
+                await fetchWeather(for: selectedCity)
+            }
+        }
+    }
+    
+    func fetchWeather(for city: City) async {
+        isLoading = true
+        Task.detached { @MainActor in
+            currentWeather = await weatherManager.currentWeather(for: city.clLocation)
+        }
+        isLoading = false
     }
 }
 
 #Preview {
     ForecastView()
+        .environment(LocationManager())
 }
