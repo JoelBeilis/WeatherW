@@ -25,16 +25,16 @@ struct DailyForecastView: View {
                                 Image(day.symbolName)
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
-                                    .frame(width: 40, height: 40)
+                                    .frame(width: 35, height: 35)
 
                                 
-// ADD PRECIPITATION DAILY FOR AN UPDATE IT DONT LOOK GOOD CURRENTLY
-//                                if day.precipitationChance > 0 {
-//                                    Text("\((day.precipitationChance * 100).formatted(.number.precision(.fractionLength(0))))%")
-//                                        .font(.system(size: 10))
-//                                        .foregroundStyle(.cyan)
-//                                        .bold()
-//                                }
+
+                                if day.precipitationChance > 0 {
+                                    Text("\((day.precipitationChance * 100).formatted(.number.precision(.fractionLength(0))))%")
+                                        .font(.system(size: 10))
+                                        .foregroundStyle(.cyan)
+                                        .bold()
+                                }
                                 
                             }
                             .frame(width: 25)

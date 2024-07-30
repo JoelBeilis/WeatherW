@@ -8,38 +8,48 @@
 import SwiftUI
 import WeatherKit
 
+import SwiftUI
+
 struct HourlyForecastView: View {
     let weatherManager = WeatherManager.shared
     let hourlyForecast: Forecast<HourWeather>
     let timezone: TimeZone
+
     var body: some View {
-        ScrollView(.horizontal) {
+        ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 15) {
-                ForEach(hourlyForecast, id: \.date) { hour in
-                    VStack(spacing: 0) {
+                ForEach(Array(hourlyForecast.enumerated()), id: \.element.date) { index, hour in
+                    VStack(spacing: 5) {
                         Text(hour.date.localTime(for: timezone))
-                        Divider()
-                        Spacer()
+                            .font(.system(size: 14, weight: .medium))
+                            .foregroundColor(.white)
+                        
                         Image(hour.symbolName) // Changed from systemName to name
                             .resizable() // Make the image resizable
                             .aspectRatio(contentMode: .fit) // Maintain aspect ratio
-                            .frame(width: 60, height: 60) // Set the size of the image
-                            .padding(.bottom,3)
+                            .frame(width: 30, height: 30) // Adjust the size of the image
+                            .padding(.bottom, 3)
+                        
                         if hour.precipitationChance > 0 {
                             Text("\((hour.precipitationChance * 100).formatted(.number.precision(.fractionLength(0))))%")
-                                .foregroundStyle(.cyan)
+                                .font(.system(size: 14, weight: .medium))
+                                .foregroundColor(.cyan)
                                 .bold()
                         }
-                        Spacer()
+                        
                         Text(weatherManager.temperatureFormatter.string(from: hour.temperature))
+                            .font(.system(size: 14, weight: .medium))
+                            .foregroundColor(.white)
                     }
+                    .padding()
+                    .frame(width: 95, height: 140) // Increased width from 70 to 90
+                    .background(
+                        RoundedRectangle(cornerRadius: 20)
+                            .fill(.secondary.opacity(index == 0 ? 0.5 : 0.2)) // Thicker opacity for the first cell
+                    )
                 }
             }
-            .font(.system(size: 13))
-            .frame(height: 100)
         }
-        .contentMargins(.all, 15, for: .scrollContent)
-        .background(RoundedRectangle(cornerRadius: 20).fill(Color.secondary.opacity(0.2)))
     }
 }
 
