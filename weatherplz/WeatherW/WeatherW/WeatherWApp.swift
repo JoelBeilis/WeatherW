@@ -15,6 +15,9 @@ struct WeatherWApp: App {
         WindowGroup {
             if locationManager.isAuthorized {
                 ForecastView()
+                    .onAppear {
+                        print(URL.documentsDirectory.path())
+                    }
             } else {
                 LocationDeniedView()
             }

@@ -5,7 +5,6 @@
 //  Created by Joel Beilis on 2024-07-27.
 //
 
-import Foundation
 import SwiftUI
 import MapKit
 
@@ -37,6 +36,7 @@ struct SearchOverlay: View {
                 List(searchService.cities) { city in
                     Button {
                         store.cities.append(city)
+                        store.saveCities()
                         isSearching = false
                     } label: {
                         Text(city.name)
