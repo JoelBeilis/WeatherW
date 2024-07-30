@@ -5,11 +5,6 @@
 //  Created by Joel Beilis on 2024-07-26.
 //
 
-//Image(currentWeather.symbolName) // Changed from systemName to name
-//    .resizable() // Make the image resizable
-//    .aspectRatio(contentMode: .fit) // Maintain aspect ratio
-//    .frame(width: 60, height: 60) // Set the size of the image
-
 import SwiftUI
 import WeatherKit
 import CoreLocation
@@ -20,9 +15,26 @@ struct ForecastView: View {
     @State private var selectedCity: City?
     let weatherManager = WeatherManager.shared
     @State private var currentWeather: CurrentWeather?
+    @State private var hourlyForecast: Forecast<HourWeather>?
     @State private var isLoading = false
     @State private var showCityList = false
     @State private var timezone: TimeZone = .current
+    
+    var highTemperature: String? {
+        if let high = hourlyForecast?.map({$0.temperature}).max() {
+            return weatherManager.temperatureFormatter.string(from: high)
+        } else {
+            return nil
+        }
+    }
+    
+    var lowTemperature: String? {
+        if let low = hourlyForecast?.map({$0.temperature}).min() {
+            return weatherManager.temperatureFormatter.string(from: low)
+        } else {
+            return nil
+        }
+    }
     
     var body: some View {
         VStack {
@@ -34,26 +46,23 @@ struct ForecastView: View {
                     Text(selectedCity.name)
                         .font(.title)
                     if let currentWeather {
-                        Text(currentWeather.date.localDate(for: timezone))
-                        Text(currentWeather.date.localTime(for: timezone))
-                        Image(currentWeather.symbolName) // Changed from systemName to name
-                            .resizable() // Make the image resizable
-                            .aspectRatio(contentMode: .fit) // Maintain aspect ratio
-                            .frame(width: 60, height: 60) // Set the size of the image
-                            .padding()
-                            .background(
-                            RoundedRectangle(cornerRadius: 20)
-                                .fill(.secondary.opacity(0.2))
-                            )
-                        let temp = weatherManager.temperatureFormatter.string(from: currentWeather.temperature)
-                        Text(temp)
-                            .font(.title2)
-                        Text(currentWeather.condition.description)
-                            .font(.title3)
-                        Spacer()
-                        AttributionView()
-                            .tint(.white)
+                        CurrentWeatherView(
+                            currentWeather: currentWeather,
+                            highTemperature: highTemperature,
+                            lowTemperature: lowTemperature,
+                            timezone: timezone
+                        )
                     }
+                    Divider()
+                    if let hourlyForecast {
+                        HourlyForecastView(
+                            hourlyForecast: hourlyForecast,
+                            timezone: timezone
+                        )
+                    }
+                    Spacer()
+                    AttributionView()
+                        .tint(.white)
                 }
             }
         }
@@ -109,6 +118,7 @@ struct ForecastView: View {
         Task.detached { @MainActor in
             currentWeather = await weatherManager.currentWeather(for: city.clLocation)
             timezone = await locationManager.getTimezone(for: city.clLocation)
+            hourlyForecast = await weatherManager.hourlyForecast(for: city.clLocation)
         }
         isLoading = false
     }
@@ -116,5 +126,6 @@ struct ForecastView: View {
 
 #Preview {
     ForecastView()
+    
         .environment(LocationManager())
 }
