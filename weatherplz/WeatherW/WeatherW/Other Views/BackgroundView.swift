@@ -9,6 +9,9 @@ import Foundation
 import SwiftUI
 import WeatherKit
 
+import SwiftUI
+import WeatherKit
+
 struct BackgroundView: View {
     let condition: WeatherCondition
     var body: some View {
@@ -18,3 +21,6 @@ struct BackgroundView: View {
     }
 }
 
+#Preview {
+    BackgroundView(condition: .cloudy)
+}
