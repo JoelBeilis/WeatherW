@@ -44,5 +44,3 @@ struct CurrentWeatherView: View {
             .font(.title3)
     }
 }
-
-
