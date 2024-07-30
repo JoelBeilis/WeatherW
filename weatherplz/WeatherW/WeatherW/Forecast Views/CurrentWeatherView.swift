@@ -36,11 +36,16 @@ struct CurrentWeatherView: View {
         let temp = weatherManager.temperatureFormatter.string(from: currentWeather.temperature)
         Text(temp)
             .font(.title2)
+        
+        let feelTemp = weatherManager.temperatureFormatter.string(from: currentWeather.apparentTemperature)
+        Text("Feels like: \(feelTemp)")
+            .font(.title3)
+        
         if let highTemperature, let lowTemperature {
             Text("H: \(highTemperature)  L:\(lowTemperature)")
                 .bold()
         }
         Text(currentWeather.condition.description)
-            .font(.title3)
+            .font(.body)
     }
 }

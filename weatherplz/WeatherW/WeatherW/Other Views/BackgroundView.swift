@@ -13,7 +13,7 @@ struct BackgroundView: View {
     var body: some View {
         Image(condition.rawValue)
             .blur(radius: 5)
-            .colorMultiply(.white.opacity(0.8))
+            .colorMultiply(.white.opacity(0.7))
     }
 }
 
