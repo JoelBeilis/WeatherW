@@ -74,11 +74,11 @@ struct ForecastView: View {
         }
         .contentMargins(.all, 15, for: .scrollContent)
         .background {
-            if selectedCity != nil,
-               let condition = currentWeather?.condition {
-                BackgroundView(condition: condition)
-            }
-        }
+                    if let condition = currentWeather?.condition, let isDaylight = currentWeather?.isDaylight {
+                        BackgroundView(condition: condition, isDaylight: isDaylight)
+                    }
+                }
+
         .preferredColorScheme(.dark)
         .safeAreaInset(edge: .bottom) {
             Button {
@@ -134,4 +134,5 @@ struct ForecastView: View {
 #Preview {
     ForecastView()
         .environment(LocationManager())
+        .environment(DataStore(forPreviews: true))
 }

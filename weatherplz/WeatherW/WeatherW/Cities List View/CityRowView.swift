@@ -46,10 +46,11 @@ struct CityRowView: View {
             }
         }
         .background {
-            if let condition = currentWeather?.condition {
-                BackgroundView(condition: condition)
-            }
-        }
+                    if let condition = currentWeather?.condition, let isDaylight = currentWeather?.isDaylight {
+                        BackgroundView(condition: condition, isDaylight: isDaylight)
+                    }
+                }
+
         .task(id: city) {
             await fetchWeather(for: city)
         }
