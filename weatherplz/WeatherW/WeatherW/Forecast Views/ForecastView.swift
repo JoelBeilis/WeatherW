@@ -10,7 +10,6 @@
 //    .aspectRatio(contentMode: .fit) // Maintain aspect ratio
 //    .frame(width: 60, height: 60) // Set the size of the image
 
-
 import SwiftUI
 import WeatherKit
 import CoreLocation
