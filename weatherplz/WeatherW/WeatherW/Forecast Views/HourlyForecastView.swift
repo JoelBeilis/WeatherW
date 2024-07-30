@@ -33,7 +33,7 @@ struct HourlyForecastView: View {
                         if hour.precipitationChance > 0 {
                             Text("\((hour.precipitationChance * 100).formatted(.number.precision(.fractionLength(0))))%")
                                 .font(.system(size: 14, weight: .medium))
-                                .foregroundColor(.cyan)
+                                .foregroundColor(.mint)
                                 .bold()
                         }
                         
@@ -45,7 +45,7 @@ struct HourlyForecastView: View {
                     .frame(width: 95, height: 140) // Increased width from 70 to 90
                     .background(
                         RoundedRectangle(cornerRadius: 20)
-                            .fill(.secondary.opacity(index == 0 ? 0.5 : 0.2)) // Thicker opacity for the first cell
+                            .fill(.primary.opacity(index == 0 ? 0.3 : 0.1)) // Thicker opacity for the first cell
                     )
                 }
             }
