@@ -8,8 +8,6 @@
 import SwiftUI
 import WeatherKit
 
-import SwiftUI
-
 struct HourlyForecastView: View {
     let weatherManager = WeatherManager.shared
     let hourlyForecast: Forecast<HourWeather>
@@ -20,7 +18,7 @@ struct HourlyForecastView: View {
             HStack(spacing: 15) {
                 ForEach(Array(hourlyForecast.enumerated()), id: \.element.date) { index, hour in
                     VStack(spacing: 5) {
-                        Text(hour.date.localTime(for: timezone))
+                        Text(index == 0 ? "Now" : hour.date.localTime(for: timezone))
                             .font(.system(size: 14, weight: .medium))
                             .foregroundColor(.white)
                         
@@ -52,4 +50,3 @@ struct HourlyForecastView: View {
         }
     }
 }
-

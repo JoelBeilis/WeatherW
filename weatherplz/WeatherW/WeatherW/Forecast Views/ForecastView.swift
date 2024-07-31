@@ -46,7 +46,8 @@ struct ForecastView: View {
                         Text("Fetching Weather...")
                     } else {
                         Text(selectedCity.name)
-                            .font(.title)
+                            .font(.system(size: 24, weight: .heavy))
+                            .frame(maxWidth: .infinity, alignment: .leading)
                         if let currentWeather {
                             CurrentWeatherView(
                                 currentWeather: currentWeather,
@@ -55,14 +56,12 @@ struct ForecastView: View {
                                 timezone: timezone
                             )
                         }
-                        Divider()
                         if let hourlyForecast {
                             HourlyForecastView(
                                 hourlyForecast: hourlyForecast,
                                 timezone: timezone
                             )
                         }
-                        Divider()
                         if let dailyForecast {
                             DailyForecastView(dailyForecast: dailyForecast, timezone: timezone)
                         }
@@ -78,7 +77,6 @@ struct ForecastView: View {
                         BackgroundView(condition: condition, isDaylight: isDaylight)
                     }
                 }
-
         .preferredColorScheme(.dark)
         .safeAreaInset(edge: .bottom) {
             Button {

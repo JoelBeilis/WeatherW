@@ -21,10 +21,12 @@ struct DailyForecastView: View {
                 let minDayTemp = dailyForecast.map { $0.lowTemperature.value }.min() ?? 0
                 let tempRange = maxDayTemp - minDayTemp
 
-                ForEach(dailyForecast, id: \.date) { day in
+                ForEach(dailyForecast.indices, id: \.self) { index in
+                    let day = dailyForecast[index]
+                    
                     HStack(spacing: 15) {
                         VStack(alignment: .leading, spacing: 5) {
-                            Text(day.date.localWeekDay(for: timezone))
+                            Text(index == 0 ? "Today" : day.date.localWeekDay(for: timezone))
                                 .font(.system(size: 14, weight: .medium))
                                 .foregroundColor(.white)
 
@@ -85,12 +87,12 @@ struct DailyForecastView: View {
                     .padding()
                     .background(
                         RoundedRectangle(cornerRadius: 20)
-                            .fill(Color.primary.opacity(day == dailyForecast.first ? 0.3 : 0.1)) // Thicker opacity for the first cell
+                            .fill(Color.primary.opacity(index == 0 ? 0.3 : 0.1)) // Thicker opacity for the first cell
+                            .frame(width: UIScreen.main.bounds.width - 40) // Adjust the width as needed
                     )
                 }
             }
             .padding()
         }
-//        .background(RoundedRectangle(cornerRadius: 20).fill(Color.secondary.opacity(0.2)))
     }
 }
