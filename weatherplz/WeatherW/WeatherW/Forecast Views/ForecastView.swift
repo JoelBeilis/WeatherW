@@ -21,6 +21,9 @@ struct ForecastView: View {
     @State private var showCityList = false
     @State private var timezone: TimeZone = .current
     
+    @State private var isCelsius = true // Track the temperature unit
+    let cities: [City] = [/* your cities data */]
+    
     var highTemperature: String? {
         if let high = hourlyForecast?.map({$0.temperature}).max() {
             return weatherManager.temperatureFormatter.string(from: high)
@@ -45,9 +48,17 @@ struct ForecastView: View {
                         ProgressView()
                         Text("Fetching Weather...")
                     } else {
-                        Text(selectedCity.name)
-                            .font(.system(size: 24, weight: .heavy))
-                            .frame(maxWidth: .infinity, alignment: .leading)
+                        HStack {
+                            Text(selectedCity.name)
+                                .font(.system(size: 24, weight: .heavy))
+                                .padding(.leading, 15) // Adjust the negative padding value as needed
+                            if selectedCity == locationManager.currentLocation {
+                                Image(systemName: "location.fill")
+                                    .foregroundColor(.white)
+                            }
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        
                         if let currentWeather {
                             CurrentWeatherView(
                                 currentWeather: currentWeather,
@@ -73,10 +84,10 @@ struct ForecastView: View {
         }
         .contentMargins(.all, 15, for: .scrollContent)
         .background {
-                    if let condition = currentWeather?.condition, let isDaylight = currentWeather?.isDaylight {
-                        BackgroundView(condition: condition, isDaylight: isDaylight)
-                    }
-                }
+            if let condition = currentWeather?.condition, let isDaylight = currentWeather?.isDaylight {
+                BackgroundView(condition: condition, isDaylight: isDaylight)
+            }
+        }
         .preferredColorScheme(.dark)
         .safeAreaInset(edge: .bottom) {
             Button {
@@ -94,8 +105,8 @@ struct ForecastView: View {
         .fullScreenCover(isPresented: $showCityList) {
             CitiesListView(currentLocation: locationManager.currentLocation, selectedCity: $selectedCity)
         }
-        .onChange(of: scenePhase) {
-            if scenePhase == .active {
+        .onChange(of: scenePhase) { newScenePhase in
+            if newScenePhase == .active {
                 selectedCity = locationManager.currentLocation
                 if let selectedCity {
                     Task {
@@ -109,7 +120,6 @@ struct ForecastView: View {
                 selectedCity = currentLocation
             }
         }
-        
         .task(id: selectedCity) {
             if let selectedCity {
                 await fetchWeather(for: selectedCity)
