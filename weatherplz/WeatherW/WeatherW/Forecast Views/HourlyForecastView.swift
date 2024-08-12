@@ -20,7 +20,7 @@ struct HourlyForecastView: View {
                     VStack(spacing: 5) {
                         Text(index == 0 ? "Now" : hour.date.localTime(for: timezone))
                             .font(.system(size: 14, weight: .medium))
-                            .foregroundColor(.white)
+                           // .foregroundColor(.white)
                         
                         Image(hour.symbolName) // Changed from systemName to name
                             .resizable() // Make the image resizable
