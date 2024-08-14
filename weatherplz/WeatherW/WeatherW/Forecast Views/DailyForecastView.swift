@@ -104,7 +104,7 @@ struct DailyForecastView: View {
                     .fill(Color.primary.opacity(0.1))
                     .frame(width: UIScreen.main.bounds.width - 20) // Adjusted width for the entire box
             )
-            .padding(.horizontal, 10) // Add some horizontal padding around the box
+            .padding(.horizontal, 5) // Add some horizontal padding around the box
         }
     }
 }

@@ -39,10 +39,10 @@ struct CurrentWeatherView: View {
 //                        .background(RoundedRectangle(cornerRadius: 20).fill(.secondary.opacity(0.2)))
                     let temp = weatherManager.temperatureFormatter.string(from: currentWeather.temperature)
                     Text(temp)
-                        .font(.title2)
+                        .font(.largeTitle)
                     let feelTemp = weatherManager.temperatureFormatter.string(from: currentWeather.apparentTemperature)
                     Text("Feels like: \(feelTemp)")
-                        .font(.callout)
+                        .font(.caption)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal)
