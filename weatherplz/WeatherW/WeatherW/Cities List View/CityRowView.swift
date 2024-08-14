@@ -24,11 +24,21 @@ struct CityRowView: View {
                     VStack(alignment: .leading) {
                         HStack {
                             VStack(alignment: .leading) {
-                                Text(city.name)
-                                    .font(.title)
-                                    .scaledToFill()
-                                    .minimumScaleFactor(0.5)
-                                    .lineLimit(1)
+                                HStack {
+                                    Text(city.name)
+                                        .font(.title)
+                                        .scaledToFill()
+                                        .minimumScaleFactor(0.5)
+                                        .lineLimit(1)
+                                    
+                                    // Show location.fill icon if the city is the user's current location
+                                    if city == locationManager.currentLocation {
+                                        Image(systemName: "location.fill")
+                                            .foregroundColor(.white)
+                                            .padding(.leading, 5)
+                                    }
+                                }
+                                
                                 Text(currentWeather.date.localTime(for: timezone))
                                     .bold()
                             }
