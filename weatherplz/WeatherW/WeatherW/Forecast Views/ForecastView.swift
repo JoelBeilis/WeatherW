@@ -21,20 +21,17 @@ struct ForecastView: View {
     @State private var showCityList = false
     @State private var timezone: TimeZone = .current
     
-    @State private var isCelsius = true // Track the temperature unit
-    let cities: [City] = [/* your cities data */]
-    
-    var highTemperature: String? {
-        if let high = hourlyForecast?.map({$0.temperature}).max() {
-            return weatherManager.temperatureFormatter.string(from: high)
+    var highTemperature: Measurement<UnitTemperature>? {
+        if let high = hourlyForecast?.map({ $0.temperature }).max() {
+            return high
         } else {
             return nil
         }
     }
     
-    var lowTemperature: String? {
-        if let low = hourlyForecast?.map({$0.temperature}).min() {
-            return weatherManager.temperatureFormatter.string(from: low)
+    var lowTemperature: Measurement<UnitTemperature>? {
+        if let low = hourlyForecast?.map({ $0.temperature }).min() {
+            return low
         } else {
             return nil
         }
@@ -51,7 +48,7 @@ struct ForecastView: View {
                         HStack {
                             Text(selectedCity.name)
                                 .font(.system(size: 24, weight: .heavy))
-                                .padding(.leading, 15) // Adjust the negative padding value as needed
+                                .padding(.leading, 15)
                             if selectedCity == locationManager.currentLocation {
                                 Image(systemName: "location.fill")
                                     .foregroundColor(.white)
@@ -144,3 +141,4 @@ struct ForecastView: View {
         .environment(LocationManager())
         .environment(DataStore(forPreviews: true))
 }
+

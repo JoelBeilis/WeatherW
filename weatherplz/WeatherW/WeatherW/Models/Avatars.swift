@@ -13,11 +13,11 @@ import SwiftUI
 class Avatars: NSObject {
     
     static let weatherThemes: [String: String] = [
-        "IS1_R_": "IS1_R_"
+        "IS1_Monkey_": "IS1_Monkey_"
         // Add other themes if needed
     ]
     
-    static var curWeatherCharacter: String = "IS1_R_"
+    static var curWeatherCharacter: String = "IS1_Monkey_"
     
     static func getWeatherBoyIcon(for temperature: Double, weatherCondition: String) -> String {
         var temperatureCode = ""

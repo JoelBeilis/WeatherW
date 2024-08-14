@@ -12,21 +12,21 @@ struct HourlyForecastView: View {
     let weatherManager = WeatherManager.shared
     let hourlyForecast: Forecast<HourWeather>
     let timezone: TimeZone
+    @EnvironmentObject var temperatureUnit: TemperatureUnit // Access the global temperature unit
 
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 15) {
+            HStack(spacing: 10) {
                 ForEach(Array(hourlyForecast.enumerated()), id: \.element.date) { index, hour in
                     VStack(spacing: 5) {
                         Text(index == 0 ? "Now" : hour.date.localTime(for: timezone))
                             .font(.system(size: 14, weight: .medium))
                             .foregroundColor(.white)
                         
-                        Image(hour.symbolName) // Changed from systemName to name
-                            .resizable() // Make the image resizable
-                            .aspectRatio(contentMode: .fit) // Maintain aspect ratio
-                            .frame(width: 30, height: 30) // Adjust the size of the image
-                            .padding(.bottom, 3)
+                        Image(hour.symbolName) // Show weather icon
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 30, height: 30)
                         
                         if hour.precipitationChance > 0 {
                             Text("\((hour.precipitationChance * 100).formatted(.number.precision(.fractionLength(0))))%")
@@ -35,18 +35,25 @@ struct HourlyForecastView: View {
                                 .bold()
                         }
                         
-                        Text(weatherManager.temperatureFormatter.string(from: hour.temperature))
+                        // Convert and display temperature based on the selected unit
+                        let temperature = convertedTemperature(hour.temperature)
+                        Text(weatherManager.temperatureFormatter.string(from: temperature))
                             .font(.system(size: 14, weight: .medium))
                             .foregroundColor(.white)
                     }
-                    .padding()
-                    .frame(width: 95, height: 140) // Increased width from 70 to 90
+                    .frame(width: 70, height: 120)
                     .background(
-                        RoundedRectangle(cornerRadius: 20)
+                        RoundedRectangle(cornerRadius: 15)
                             .fill(.primary.opacity(index == 0 ? 0.3 : 0.1)) // Thicker opacity for the first cell
                     )
                 }
             }
+            .padding(.horizontal, 3)
         }
+    }
+    
+    // Helper function to convert temperatures based on the selected unit
+    func convertedTemperature(_ temperature: Measurement<UnitTemperature>) -> Measurement<UnitTemperature> {
+        return temperatureUnit.isCelsius ? temperature : temperature.converted(to: .fahrenheit)
     }
 }

@@ -11,10 +11,12 @@ import WeatherKit
 struct CityRowView: View {
     let weatherManager = WeatherManager.shared
     @Environment(LocationManager.self) var locationManager
+    @EnvironmentObject var temperatureUnit: TemperatureUnit
     @State private var currentWeather: CurrentWeather?
     @State private var isLoading = false
     @State private var timezone: TimeZone = .current
     let city: City
+    
     var body: some View {
         VStack {
             if isLoading {
@@ -24,27 +26,26 @@ struct CityRowView: View {
                     VStack(alignment: .leading) {
                         HStack {
                             VStack(alignment: .leading) {
-                                HStack {
-                                    Text(city.name)
-                                        .font(.title)
-                                        .scaledToFill()
-                                        .minimumScaleFactor(0.5)
-                                        .lineLimit(1)
-                                    
-                                    // Show location.fill icon if the city is the user's current location
-                                    if city == locationManager.currentLocation {
-                                        Image(systemName: "location.fill")
-                                            .foregroundColor(.white)
-                                            .padding(.leading, 5)
-                                    }
+                                Text(city.name)
+                                    .font(.title)
+                                    .scaledToFill()
+                                    .minimumScaleFactor(0.5)
+                                    .lineLimit(1)
+                                
+                                if city == locationManager.currentLocation {
+                                    Image(systemName: "location.fill")
+                                        .foregroundColor(.white)
+                                        .padding(.leading, 5)
                                 }
                                 
                                 Text(currentWeather.date.localTime(for: timezone))
                                     .bold()
+                          
                             }
                             Spacer()
-                            let temp = weatherManager.temperatureFormatter.string(from: currentWeather.temperature)
-                            Text(temp)
+                            let temperature = temperatureUnit.isCelsius ? currentWeather.temperature : currentWeather.temperature.converted(to: .fahrenheit)
+                            let tempString = weatherManager.temperatureFormatter.string(from: temperature)
+                            Text(tempString)
                                 .font(.system(size: 60, weight: .thin, design: .rounded))
                                 .fixedSize(horizontal: true, vertical: true)
                         }
@@ -78,4 +79,5 @@ struct CityRowView: View {
 #Preview {
     CityRowView(city: City.mockCurrent)
         .environment(LocationManager())
+        .environmentObject(TemperatureUnit())
 }

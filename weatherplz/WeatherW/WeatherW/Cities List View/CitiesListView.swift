@@ -10,10 +10,12 @@ import SwiftUI
 struct CitiesListView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(DataStore.self) private var store
+    @EnvironmentObject var temperatureUnit: TemperatureUnit
     let currentLocation: City?
     @Binding var selectedCity: City?
     @State private var isSearching = false
     @FocusState private var isFocused: Bool
+
     var body: some View {
         NavigationStack {
             ZStack {
@@ -43,7 +45,7 @@ struct CitiesListView: View {
                                 CityRowView(city: city)
                                     .swipeActions {
                                         Button(role: .destructive) {
-                                            if let index = store.cities.firstIndex(where: {$0.id == city.id}) {
+                                            if let index = store.cities.firstIndex(where: { $0.id == city.id }) {
                                                 store.cities.remove(at: index)
                                                 store.saveCities()
                                             }
@@ -64,6 +66,25 @@ struct CitiesListView: View {
                     .navigationTitle("My Cities")
                     .navigationBarTitleDisplayMode(.inline)
                     .preferredColorScheme(.dark)
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            HStack(spacing: 10) {
+                                Button(action: {
+                                    temperatureUnit.isCelsius = true
+                                }) {
+                                    Text("Cº")
+                                        .foregroundColor(temperatureUnit.isCelsius ? .white : .gray)
+                                }
+
+                                Button(action: {
+                                    temperatureUnit.isCelsius = false
+                                }) {
+                                    Text("Fº")
+                                        .foregroundColor(!temperatureUnit.isCelsius ? .white : .gray)
+                                }
+                            }
+                        }
+                    }
                 }
                 if isSearching {
                     SearchOverlay(isSearching: $isSearching)
@@ -78,4 +99,5 @@ struct CitiesListView: View {
     CitiesListView(currentLocation: City.mockCurrent, selectedCity: .constant(nil))
         .environment(LocationManager())
         .environment(DataStore(forPreviews: true))
+        .environmentObject(TemperatureUnit())
 }
