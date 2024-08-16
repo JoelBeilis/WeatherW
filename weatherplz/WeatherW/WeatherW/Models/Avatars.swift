@@ -39,12 +39,12 @@ class Avatars: NSObject {
         }
         
         var weatherCode = ""
-        if weatherCondition == "clear-day" || weatherCondition == "clear-night" {
-            weatherCode = "sunny"
-        } else if weatherCondition == "rain" || weatherCondition == "sleet" || weatherCondition == "snow" || weatherCondition == "hail" {
+        if weatherCondition == "drizzle" || weatherCondition == "blowingDust" || weatherCondition == "blowingSnow" || weatherCondition == "flurries" || weatherCondition == "freezingRain" || weatherCondition == "frigid" || weatherCondition == "partlyCloudy" {
+            weatherCode = "rainy"
+        } else if weatherCondition == "rain" || weatherCondition == "sleet" || weatherCondition == "heavySnow" || weatherCondition == "heavyRain" || weatherCondition == "snow" || weatherCondition == "hail" || weatherCondition == "isolatedThunderstorms" || weatherCondition == "scatteredThunderstorms" || weatherCondition == "strongStorms" || weatherCondition == "sunShowers" || weatherCondition == "showers" || weatherCondition == "thunderstorms" || weatherCondition == "tropicalStorm" || weatherCondition == "wintryMix" {
             weatherCode = "cloudburst"
         } else {
-            weatherCode = "rainy"
+            weatherCode = "sunny"
         }
         
         let theme = weatherThemes[curWeatherCharacter] ?? ""

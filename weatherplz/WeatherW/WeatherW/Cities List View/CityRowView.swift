@@ -25,7 +25,7 @@ struct CityRowView: View {
                 if let currentWeather {
                     VStack(alignment: .leading) {
                         HStack {
-                            VStack(alignment: .leading) {
+                            HStack(spacing: 5) { // Adjust spacing as needed
                                 Text(city.name)
                                     .font(.title)
                                     .scaledToFill()
@@ -35,20 +35,21 @@ struct CityRowView: View {
                                 if city == locationManager.currentLocation {
                                     Image(systemName: "location.fill")
                                         .foregroundColor(.white)
-                                        .padding(.leading, 5)
                                 }
-                                
-                                Text(currentWeather.date.localTime(for: timezone))
-                                    .bold()
-                          
                             }
+                            
                             Spacer()
+                            
                             let temperature = temperatureUnit.isCelsius ? currentWeather.temperature : currentWeather.temperature.converted(to: .fahrenheit)
                             let tempString = weatherManager.temperatureFormatter.string(from: temperature)
                             Text(tempString)
                                 .font(.system(size: 60, weight: .thin, design: .rounded))
                                 .fixedSize(horizontal: true, vertical: true)
                         }
+                        
+                        Text(currentWeather.date.localTime(for: timezone))
+                            .bold()
+                        
                         Text(currentWeather.condition.description)
                     }
                     .padding()
