@@ -53,6 +53,7 @@ struct CitiesListView: View {
                                             Image(systemName: "trash")
                                         }
                                     }
+                                
                                     .onTapGesture {
                                         selectedCity = city
                                         dismiss()
