@@ -41,8 +41,12 @@ struct CitiesListView: View {
                                         dismiss()
                                     }
                             }
-                            ForEach(store.cities.sorted(using: KeyPathComparator(\.name))) { city in
+                            ForEach(store.cities) { city in
                                 CityRowView(city: city)
+                                    .onTapGesture {
+                                        selectedCity = city
+                                        dismiss()
+                                    }
                                     .swipeActions {
                                         Button(role: .destructive) {
                                             if let index = store.cities.firstIndex(where: { $0.id == city.id }) {
@@ -52,12 +56,13 @@ struct CitiesListView: View {
                                         } label: {
                                             Image(systemName: "trash")
                                         }
+                                        .tint(.red)
+                                        .cornerRadius(20) // Adding corner radius to the red remove box
                                     }
-                                
-                                    .onTapGesture {
-                                        selectedCity = city
-                                        dismiss()
-                                    }
+                            }
+                            .onMove { indices, newOffset in
+                                store.cities.move(fromOffsets: indices, toOffset: newOffset)
+                                store.saveCities() // Save the reordered list
                             }
                         }
                         .clipShape(RoundedRectangle(cornerRadius: 10))
