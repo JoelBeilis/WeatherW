@@ -11,14 +11,148 @@ import WeatherKit
 import SwiftUI
 
 class Avatars: NSObject {
-    
+
     static let weatherThemes: [String: String] = [
         "IS1_Monkey_": "IS1_Monkey_"
         // Add other themes if needed
     ]
     
     static var curWeatherCharacter: String = "IS1_Monkey_"
-    
+
+    static let clothingLabelNames = [
+        "IS1_Monkey_0to9_cloudburst": """
+        - Jacket
+        - Sweater or hoodie
+        - Long pants
+        - Hat
+        - Scarf
+        - Umbrella
+        """,
+        "IS1_Monkey_0to9_rainy": """
+        - Jacket
+        - Sweater or hoodie
+        - Long pants
+        - Hat
+        - Scarf
+        - Umbrella
+        """,
+        "IS1_Monkey_0to9_sunny": """
+        - Jacket
+        - Sweater or hoodie
+        - Long pants
+        - Hat
+        - Scarf
+        """,
+        "IS1_Monkey_10to14_cloudburst": """
+        - Windbreaker or sweater
+        - Long pants
+        - Umbrella
+        """,
+        "IS1_Monkey_10to14_rainy": """
+        - Windbreaker or sweater
+        - Long pants
+        - Umbrella
+        """,
+        "IS1_Monkey_10to14_sunny": """
+        - Windbreaker or sweater
+        - Long pants
+        """,
+        "IS1_Monkey_15to19_cloudburst": """
+        - Long sleeved shirt
+        - Long pants
+        - Umbrella
+        """,
+        "IS1_Monkey_15to19_rainy": """
+        - Long sleeved shirt
+        - Long pants
+        - Umbrella
+        """,
+        "IS1_Monkey_15to19_sunny": """
+        - Long sleeved shirt
+        - Long pants
+        """,
+        "IS1_Monkey_20to23_cloudburst": """
+        - Short sleeved shirt
+        - Pants
+        - Sunhat
+        - Umbrella
+        """,
+        "IS1_Monkey_20to23_rainy": """
+        - Short sleeved shirt
+        - Pants
+        - Sunhat
+        - Sunglasses
+        - Umbrella
+        """,
+        "IS1_Monkey_20to23_sunny": """
+        - Short sleeved shirt
+        - Pants
+        - Sunglasses
+        - Sunhat
+        """,
+        "IS1_Monkey_24to27_cloudburst": """
+        - Short sleeved shirt
+        - Short pants
+        - Sunhat
+        - Umbrella
+        """,
+        "IS1_Monkey_24to27_rainy": """
+        - Short sleeved shirt
+        - Short pants
+        - Sunglasses
+        - Sunhat
+        - Umbrella
+        """,
+        "IS1_Monkey_24to27_sunny": """
+        - Short sleeved shirt
+        - Short pants
+        - Sunglasses
+        - Sunhat
+        """,
+        "IS1_Monkey_b0_cloudburst": """
+        - Jacket
+        - Sweater
+        - Hat
+        - Scarf
+        - Gloves
+        - Winter boots
+        - Umbrella
+        """,
+        "IS1_Monkey_b0_rainy": """
+        - Jacket
+        - Sweater
+        - Hat
+        - Scarf
+        - Gloves
+        - Winter boots
+        - Umbrella
+        """,
+        "IS1_Monkey_b0_sunny": """
+        - Jacket
+        - Sweater
+        - Hat
+        - Scarf
+        - Gloves
+        - Winter boots
+        """,
+        "IS1_Monkey_g28_cloudburst": """
+        - Shorts
+        - Sunhat
+        - Umbrella
+        """,
+        "IS1_Monkey_g28_rainy": """
+        - Shorts
+        - Sunglasses
+        - Sunhat
+        - Umbrella
+        """,
+        "IS1_Monkey_g28_sunny": """
+        - Shorts
+        - Sunglasses
+        - Sunhat
+        """
+    ]
+
     static func getWeatherBoyIcon(for temperature: Double, weatherCondition: String) -> String {
         var temperatureCode = ""
         
@@ -48,24 +182,14 @@ class Avatars: NSObject {
         }
         
         let theme = weatherThemes[curWeatherCharacter] ?? ""
-        return theme + temperatureCode + "_" + weatherCode
+        let generatedKey = theme + temperatureCode + "_" + weatherCode
+        print("Generated key: \(generatedKey)") // Debugging: Print the generated key
+        return generatedKey
+    }
+
+    static func getClothingRecommendation(for temperature: Double, condition: String) -> String {
+        let key = getWeatherBoyIcon(for: temperature, weatherCondition: condition)
+        print("Clothing recommendation key: \(key)") // Debugging: Print the key used for lookup
+        return clothingLabelNames[key] ?? "Dress appropriately."
     }
 }
-
-
-
-//static let clothingLabelNames = [
-//    "clear-day" : "Sunscreen, Hat, Sunglasses ",
-//    "clear-night" : "Jacket or Sweater",
-//    "rain" : " Raincoat, Rainboots",
-//    "snow" : "Jacket, Hat, Gloves",
-//    "sleet" : "Jacket, Hat, Gloves",
-//    "wind" : "Wind breaker",
-//    "fog" : "Jacket or Sweater",
-//    "cloudy" : "Jacket or Sweater",
-//    "partly-cloudy-day" : "Jacket or Sweater",
-//    "partly-cloudy-night" : "Jacket or Sweater",
-//    "hail" : "Jacket, Hat, Gloves",
-//    "thunderstorm" : "Raincoat, Rainboots",
-//    "tornado" : "Jacket, Hat, Sweater",
-//]
