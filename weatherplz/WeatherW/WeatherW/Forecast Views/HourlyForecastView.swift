@@ -18,21 +18,24 @@ struct HourlyForecastView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 10) {
                 ForEach(Array(hourlyForecast.enumerated()), id: \.element.date) { index, hour in
-                    VStack(spacing: 5) {
+                    VStack(spacing: 0) {
                         Text(index == 0 ? "Now" : hour.date.localTime(for: timezone))
                             .font(.system(size: 14, weight: .medium))
                             .foregroundColor(.white)
+                            .padding(.top, 5)
                         
                         Image(hour.symbolName) // Show weather icon
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 30, height: 30)
+                            .padding(.top, hour.precipitationChance > 0 ? 0 : 15) // Adjust padding based on precipitation
                         
                         if hour.precipitationChance > 0 {
                             Text("\((hour.precipitationChance * 100).formatted(.number.precision(.fractionLength(0))))%")
                                 .font(.system(size: 14, weight: .medium))
                                 .foregroundColor(.mint)
                                 .bold()
+                                .padding(.top, 5)
                         }
                         
                         // Convert and display temperature based on the selected unit
@@ -40,6 +43,7 @@ struct HourlyForecastView: View {
                         Text(weatherManager.temperatureFormatter.string(from: temperature))
                             .font(.system(size: 14, weight: .medium))
                             .foregroundColor(.white)
+                            .padding(.bottom, 5)
                     }
                     .frame(width: 70, height: 120)
                     .background(

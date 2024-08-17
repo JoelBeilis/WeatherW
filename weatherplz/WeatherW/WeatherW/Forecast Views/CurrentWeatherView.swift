@@ -5,22 +5,6 @@
 //  Created by Joel Beilis on 2024-07-27.
 //
 
-//let clothingLabelNames = [
-//    "clear-day" : "Sunscreen, Hat, Sunglasses ",
-//    "clear-night" : "Jacket or Sweater",
-//    "rain" : " Raincoat, Rainboots",
-//    "snow" : "Jacket, Hat, Gloves",
-//    "sleet" : "Jacket, Hat, Gloves",
-//    "wind" : "Wind breaker",
-//    "fog" : "Jacket or Sweater",
-//    "cloudy" : "Jacket or Sweater",
-//    "partly-cloudy-day" : "Jacket or Sweater",
-//    "partly-cloudy-night" : "Jacket or Sweater",
-//    "hail" : "Jacket, Hat, Gloves",
-//    "thunderstorm" : "Raincoat, Rainboots",
-//    "tornado" : "Jacket, Hat, Sweater",
-//]
-
 import SwiftUI
 import WeatherKit
 
@@ -48,7 +32,7 @@ struct CurrentWeatherView: View {
                     let temperature = convertedTemperature(currentWeather.temperature)
                     let tempString = weatherManager.temperatureFormatter.string(from: temperature)
                     Text(tempString)
-                        .font(.largeTitle)
+                        .font(.largeTitle).bold()
 
                     let feelTemperature = convertedTemperature(currentWeather.apparentTemperature)
                     let feelTempString = weatherManager.temperatureFormatter.string(from: feelTemperature)
