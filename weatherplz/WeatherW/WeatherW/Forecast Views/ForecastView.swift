@@ -21,6 +21,8 @@ struct ForecastView: View {
     @State private var showCityList = false
     @State private var timezone: TimeZone = .current
     
+    var city: City?
+    
     var highTemperature: Measurement<UnitTemperature>? {
         if let high = hourlyForecast?.map({ $0.temperature }).max() {
             return high
@@ -104,7 +106,7 @@ struct ForecastView: View {
         }
         .onChange(of: scenePhase) { newScenePhase in
             if newScenePhase == .active {
-                selectedCity = locationManager.currentLocation
+                selectedCity = city ?? locationManager.currentLocation
                 if let selectedCity {
                     Task {
                         await fetchWeather(for: selectedCity)
@@ -114,7 +116,7 @@ struct ForecastView: View {
         }
         .task(id: locationManager.currentLocation) {
             if let currentLocation = locationManager.currentLocation, selectedCity == nil {
-                selectedCity = currentLocation
+                selectedCity = city ?? currentLocation
             }
         }
         .task(id: selectedCity) {
@@ -135,10 +137,3 @@ struct ForecastView: View {
         isLoading = false
     }
 }
-
-#Preview {
-    ForecastView()
-        .environment(LocationManager())
-        .environment(DataStore(forPreviews: true))
-}
-
