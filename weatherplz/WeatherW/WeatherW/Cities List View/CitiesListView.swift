@@ -52,45 +52,51 @@ struct CitiesListView: View {
                                             if let index = store.cities.firstIndex(where: { $0.id == city.id }) {
                                                 store.cities.remove(at: index)
                                                 store.saveCities()
+
+                                                // Update the selected city if it was the one being removed
+                                                if selectedCity == city {
+                                                    selectedCity = store.cities.first // Update to the next city in the list
+                                                }
                                             }
                                         } label: {
                                             Image(systemName: "trash")
                                         }
                                         .tint(.red)
-                                        .cornerRadius(20) // Adding corner radius to the red remove box
+                                        .cornerRadius(20)
                                     }
                             }
                             .onMove { indices, newOffset in
                                 store.cities.move(fromOffsets: indices, toOffset: newOffset)
-                                store.saveCities() // Save the reordered list
+                                store.saveCities()
                             }
                         }
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                         .listRowInsets(.init(top: 0, leading: 20, bottom: 5, trailing: 20))
                     }
+
                     .listStyle(.plain)
                     .navigationTitle("My Cities")
                     .navigationBarTitleDisplayMode(.inline)
                     .preferredColorScheme(.dark)
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            HStack(spacing: 10) {
-                                Button(action: {
-                                    temperatureUnit.isCelsius = true
-                                }) {
-                                    Text("Cº")
-                                        .foregroundColor(temperatureUnit.isCelsius ? .white : .gray)
-                                }
-
-                                Button(action: {
-                                    temperatureUnit.isCelsius = false
-                                }) {
-                                    Text("Fº")
-                                        .foregroundColor(!temperatureUnit.isCelsius ? .white : .gray)
-                                }
-                            }
-                        }
-                    }
+//                    .toolbar {
+//                        ToolbarItem(placement: .navigationBarTrailing) {
+//                            HStack(spacing: 10) {
+//                                Button(action: {
+//                                    temperatureUnit.isCelsius = true
+//                                }) {
+//                                    Text("Cº")
+//                                        .foregroundColor(temperatureUnit.isCelsius ? .white : .gray)
+//                                }
+//
+//                                Button(action: {
+//                                    temperatureUnit.isCelsius = false
+//                                }) {
+//                                    Text("Fº")
+//                                        .foregroundColor(!temperatureUnit.isCelsius ? .white : .gray)
+//                                }
+//                            }
+//                        }
+//                    }
                 }
                 if isSearching {
                     SearchOverlay(isSearching: $isSearching)

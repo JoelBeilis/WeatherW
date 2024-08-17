@@ -183,13 +183,13 @@ class Avatars: NSObject {
         
         let theme = weatherThemes[curWeatherCharacter] ?? ""
         let generatedKey = theme + temperatureCode + "_" + weatherCode
-        print("Generated key: \(generatedKey)") // Debugging: Print the generated key
+//        print("Generated key: \(generatedKey)") // Debugging: Print the generated key
         return generatedKey
     }
 
     static func getClothingRecommendation(for temperature: Double, condition: String) -> String {
         let key = getWeatherBoyIcon(for: temperature, weatherCondition: condition)
-        print("Clothing recommendation key: \(key)") // Debugging: Print the key used for lookup
+//        print("Clothing recommendation key: \(key)") // Debugging: Print the key used for lookup
         return clothingLabelNames[key] ?? "Dress appropriately."
     }
 }

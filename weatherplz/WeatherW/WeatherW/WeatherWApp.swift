@@ -17,17 +17,14 @@ struct WeatherWApp: App {
     var body: some Scene {
         WindowGroup {
             if isFirstLaunch || !locationManager.isAuthorized {
-                // Show the first city in the list
-                let firstCity = City.cities.first ?? City.mockCurrent
+                let firstCity = store.cities.first ?? City.mockCurrent
                 ForecastView(city: firstCity)
                     .environmentObject(temperatureUnit)
                     .onAppear {
-                        // Set the flag so this block doesn't run again
                         UserDefaults.standard.set(false, forKey: "isFirstLaunch")
                         print(URL.documentsDirectory.path())
                     }
             } else {
-                // Show the user's location-based weather
                 ForecastView()
                     .environmentObject(temperatureUnit)
                     .onAppear {

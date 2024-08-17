@@ -16,6 +16,10 @@ class DataStore {
     init(forPreviews: Bool = false) {
         self.forPreviews = forPreviews
         loadCities()
+        if cities.isEmpty {
+            cities = City.cities // Populate with default cities
+            saveCities() // Save the initial cities to persist them
+        }
     }
     
     func loadCities() {
