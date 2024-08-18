@@ -37,7 +37,7 @@ struct CurrentWeatherView: View {
                     let feelTemperature = convertedTemperature(currentWeather.apparentTemperature)
                     let feelTempString = weatherManager.temperatureFormatter.string(from: feelTemperature)
                     Text("Feels like: \(feelTempString)")
-                        .font(.caption)
+                        .font(.body)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal)
@@ -49,8 +49,8 @@ struct CurrentWeatherView: View {
                     Image(imageName)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: 230, height: 230)
-                        .padding(10)
+                        .frame(width: 195, height: 195)
+                        .padding(2)
                 }
                 .sheet(isPresented: $showAvatarPopup) {
                     let recommendation = Avatars.getClothingRecommendation(for: currentWeather.temperature.value, condition: currentWeather.condition.rawValue)
@@ -61,7 +61,7 @@ struct CurrentWeatherView: View {
 
             HStack {
                 Text(currentWeather.condition.description)
-                    .font(.callout)
+                    .font(.body)
                 Spacer()
                 if let highTemperature, let lowTemperature {
                     let highTemp = convertedTemperature(highTemperature)
